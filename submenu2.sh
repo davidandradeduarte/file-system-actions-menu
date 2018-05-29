@@ -3,12 +3,12 @@
 # Sub menu 2 script
 
 function draw_menu {
-    printf "\nCOMANDOS PARA PROCESSAMENTO DE TEXTO\n\n"
-    printf "1 – Procurar um padrão num ficheiro\n"
-    printf "2 – Contar linhas, palavras e carateres de um ficheiro\n"
-    printf "3 – Mostrar as diferenças entre dois ficheiros\n"
-    printf "4 – Sair: Retorno ao menu principal\n\n"
-    printf "Selecione uma opção: "
+    printf "\nCOMMANDS FOR TEXT PROCESSING\n\n"
+    printf "1 – Search for a pattern in a file\n"
+    printf "2 – Count lines, words, and characters in a file\n"
+    printf "3 – Show differences between two files\n"
+    printf "4 – Back to main menu\n\n"
+    printf "Select an option: "
 }
 
 function read_option {
@@ -16,17 +16,17 @@ function read_option {
     if ! [[ "$input" =~ ^[1-4]+$ ]] ; 
     then
         #exec >&2;
-        printf "ERRO: Opção de entrada inválida.\n\n"
+        printf "ERROR: Invalid input option.\n\n"
         return
     fi
 
     case $input in
-	1)
-		printf "Introduza o padrão que pretende procurar: "
-		read pattern
+    1)
+        printf "Enter the pattern you want to search for: "
+        read pattern
 
-        printf "Introduza o nome/caminho dos ficheiros (use um espaço para separar o nome de cada um): "
-		read files
+        printf "Enter the name/path of the files (use a space to separate the name of each):"
+        read files
 
         for file in $files; do
             if file_exists $file;
@@ -37,18 +37,18 @@ function read_option {
                 grep -Ri $pattern $file
                 printf "\n\n"
             else
-                printf "ERRO: $file não existe ou não é um ficheiro válido.\n"
+                printf "ERROR: $file does not exist or is not a valid file.\n"
             fi
         done
-		;;
-	2)
-		printf "Introduza o nome/caminho dos ficheiros (use um espaço para separar o nome de cada um): "
-		read files
+        ;;
+    2)
+        printf "Enter the name/path of the files (use a space to separate the name of each): "
+        read files
 
         for file in $files; do
             if file_exists $file;
             then
-                # TODO: remove filename printed by wc    
+                # TODO: remove filename printed by wc
                 printf "\n"
                 lines=$(wc -l $file)
                 words=$(wc -w $file)
@@ -56,38 +56,38 @@ function read_option {
                 printf "$file\n lines:${linhas}\n words:${palavras}\n chars:${carateres}"
                 printf "\n"
             else
-                printf "ERRO: $file não existe ou não é um ficheiro válido.\n"
+                printf "ERROR: $file does not exist or is not a valid file.\n"
             fi
         done
-		;;
-	3)
-		printf "Introduza o nome/caminho do primeiro ficheiro: "
-	    read file1
+        ;;
+    3)
+        printf "Enter the name/path of the first file: "
+        read file1
 
         while ! file_exists $file1; do
-            printf "ERRO: $file1 não existe ou não é um ficheiro válido.\n"
-            printf "Introduza o nome/caminho do primeiro ficheiro: "
-	        read file1
+            printf "ERROR: $file1 does not exist or is not a valid file.\n"
+            printf "Enter the name/path of the first file: "
+            read file1
         done
 
-        printf "Introduza o nome/caminho do segundo ficheiro: "
-	    read file2
+        printf "Enter the name/path of the second file: "
+        read file2
 
         while ! file_exists $file2; do
-            printf "ERRO: $file2 não existe ou não é um ficheiro válido.\n"
-            printf "Introduza o nome/caminho do segundo ficheiro: "
-	        read file2
+            printf "ERROR: $file2 does not exist or is not a valid file.\n"
+            printf "Enter the name/path of the second file: "
+            read file2
         done
 
         printf "\n"
         diff $file1 $file2
         printf "\n"
-		;;
+        ;;
     4)
         exit 42
         ;;
     *)
-        printf "ERRO: Opção de entrada inválida.\n\n"
+        printf "ERROR: Invalid input option.\n\n"
     esac
 }
 
